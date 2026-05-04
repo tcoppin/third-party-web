@@ -8,6 +8,11 @@ jobs:
   build:
     name: Linux
     runs-on: ubuntu-latest
+    permissions:
+      contents: write       # semantic-release: create tags & GitHub releases
+      issues: write         # semantic-release: comment on issues
+      pull-requests: write  # semantic-release: comment on PRs
+      id-token: write       # npm trusted publisher: obtain OIDC token
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,6 +28,5 @@ jobs:
       - name: yarn semantic-release
         if: github.ref == 'refs/heads/master'
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: yarn semantic-release
